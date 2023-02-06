@@ -92,6 +92,7 @@ function getWorker(string $area)
         return $res;
     }
 
+    // Для единообразия,
     $res2[$res] = $area;
     return $res2;
 }
@@ -99,6 +100,6 @@ function getWorker(string $area)
 
 //echo getWorkerLogin(5);
 
-$p = getWorker('Заводская');
+$p = getWorker('Кукков');
 var_dump($p);
 
