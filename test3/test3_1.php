@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Вариант с наследованием
+ * Вариант с наследованием метода объекта
  */
 
 
@@ -25,8 +25,6 @@ class PostRF extends Trans
         if ( $weight <= 10) {
             return 100;
         }
-//        $weight = $weight -10;
-//        return $weight * 1000 +100;
         return 1000;
     }
 }
