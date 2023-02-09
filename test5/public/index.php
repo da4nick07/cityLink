@@ -14,9 +14,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ( !empty($_POST) ) {
         if ( isset( $_POST['members'] )) {
-            $members = htmlentities($_POST['members'], ENT_QUOTES, "UTF-8");
-            $members = explode( ', ', $members);
-            $vars['_MEMBERS'] = $members;
+//            $members = htmlentities($_POST['members'], ENT_QUOTES, "UTF-8");
+            $members = $_POST['members'];
+
+            $str = 'проверяемая строка с русскими символами';
+            if (!preg_match("/^[а-яА-ЯёЁa-zA-Z,]+$/", $members)) {
+                $vars['_ERROR'] = 'Допускаются только буквы и запятая!';
+            } else {
+                $members = explode( ',', $members);
+                $res = [];
+                $c = count($members);
+                for ( $i=0; $i < $c; $i++) {
+                    $res[] = [ 'n'=>$i +1, 'name'=>$members[$i], 'rate'=>rand(0, 100) ];
+                }
+
+                $vars['_MEMBERS'] = $res;
+            }
         }
     }
 } else {
