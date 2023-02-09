@@ -27,9 +27,10 @@
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-sm-6 text-center">
-                            <input type="text" id="name" name="members" placeholder="Введите имена участников через запятую""><br>
+                            <input type="text" id="name" name="members" placeholder="Введите имена участников через запятую"><br>
                         </div>
                     </div>
+
                     <br>
                     <div class="row justify-content-center">
                         <div class="col text-center">
