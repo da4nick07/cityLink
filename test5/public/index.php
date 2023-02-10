@@ -29,16 +29,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // обрабатываем ввод
 //            $members = htmlentities($_POST['members'], ENT_QUOTES, "UTF-8");
             $members = $_POST['members'];
-            if (!preg_match("/^[а-яА-ЯёЁa-zA-Z,]+$/", $members)) {
-                $vars['_ERROR'] = 'Допускаются только буквы и запятая!';
-                $vars['_NEW'] = $members;
-            }else {
-                $members = explode( ',', $members);
+            if (preg_match("/[^а-яё,]/iu", $members)) {
+                $vars['_ERROR'] = 'Допускаются только кириллические буквы и запятая!';
+                $vars['_NEW'] = $_POST['members'];
+            } else {
+                $members = explode(',' , $members);
                 $c = count($members);
                 for ( $i=0; $i < $c; $i++) {
                     $res[] = [ 'n'=>$i +1, 'name'=>$members[$i], 'rate'=>rand(0, 100) ];
                 }
             }
+
             // передаём и пишем в сессию
             $vars['_MEMBERS'] = $res;
             $_SESSION['old'] = json_encode($res, true);
