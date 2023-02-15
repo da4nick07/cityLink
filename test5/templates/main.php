@@ -6,12 +6,12 @@
 
     <title>Олимпиада</title>
 
-     <link href="/static/styles/bs513/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+     <link href="/static/front/styles/bs513/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
     </head>
     <body>
 
-    <script src="/static/styles/bs513/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/front/styles/bs513/js/bootstrap.bundle.min.js"></script>
 
     <div class="container-fluid">
 
@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="inputError" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -72,16 +72,15 @@
             </div>
 
             <script>
-                var myModal = new bootstrap.Modal(document.getElementById('modal'), {
+                var myModal = new bootstrap.Modal(document.getElementById('inputError'), {
                     keyboard: false
                 })
                 myModal.show()
             </script>
 
-
         <?php endif; ?>
 
-        <?php if( $_METHOD == 'POST'): ?>
+        <?php if( isset($_MEMBERS)): ?>
 
         <div class="row justify-content-center">
             <div class="col-sm-6 text-center" style="background-color:#b1dfbb;">
@@ -89,9 +88,60 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
+<!--
                             <th scope="col">№</th>
-                            <th scope="col">Имя</th>
-                            <th scope="col">Очки</th>
+-->
+                            <th scope="col"  style="background-color: red">
+                                <div class="d-grid gap-2">
+
+                                    <?php if(!isset($_DESC0)): ?>
+                                        <button class="btn btn-primary" type="button" onClick="document.location = '/?sortby=0&desc0=-1'">№</button>
+                                    <?php endif; ?>
+                                    <?php if($_DESC0 == -1): ?>
+                                        <button class="btn btn-primary" type="button" onClick="document.location = '/?sortby=0&desc0=1'">№
+                                            <img src="static/front/images/sortl.png" alt="Сортировка"></button>
+                                    <?php endif; ?>
+                                    <?php if($_DESC0 == 1): ?>
+                                        <button class="btn btn-primary" type="button" onClick="document.location = '/?sortby=0&desc0=-1'">№
+                                            <img src="static/front/images/sortb.png" alt="Сортировка"></button>
+                                    <?php endif; ?>
+
+                                </div>
+                            </th>
+                            <th scope="col"  style="background-color: red">
+                                <div class="d-grid gap-2">
+
+                                    <?php if(!isset($_DESC1)): ?>
+                                        <button class="btn btn-primary" type="button" onClick="document.location = '/?sortby=1&desc1=-1'">Имя</button>
+                                    <?php endif; ?>
+                                    <?php if($_DESC1 == -1): ?>
+                                        <button class="btn btn-primary" type="button" onClick="document.location = '/?sortby=1&desc1=1'">Имя
+                                            <img src="static/front/images/sortl.png" alt="Сортировка"></button>
+                                    <?php endif; ?>
+                                    <?php if($_DESC1 == 1): ?>
+                                        <button class="btn btn-primary" type="button" onClick="document.location = '/?sortby=1&desc1=-1'">Имя
+                                            <img src="static/front/images/sortb.png" alt="Сортировка"></button>
+                                    <?php endif; ?>
+
+                                </div>
+                            </th>
+                            <th scope="col"  style="background-color: red">
+                                <div class="d-grid gap-2">
+
+                                    <?php if(!isset($_DESC2)): ?>
+                                        <button class="btn btn-primary" type="button" onClick="document.location = '/?sortby=2&desc2=-1'">Очки</button>
+                                    <?php endif; ?>
+                                    <?php if($_DESC2 == -1): ?>
+                                        <button class="btn btn-primary" type="button" onClick="document.location = '/?sortby=2&desc2=1'">Очки
+                                            <img src="static/front/images/sortl.png" alt="Сортировка"></button>
+                                    <?php endif; ?>
+                                    <?php if($_DESC2 == 1): ?>
+                                        <button class="btn btn-primary" type="button" onClick="document.location = '/?sortby=2&desc2=-1'">Очки
+                                            <img src="static/front/images/sortb.png" alt="Сортировка"></button>
+                                    <?php endif; ?>
+
+                                </div>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -111,6 +161,13 @@
         </div>
 
         <?php endif; ?>
+
+
+        <p>
+            <?php if( isset($_DESC1)): ?>
+                <?php echo 'DESC1! = ' . $_DESC1; ?>
+            <?php endif; ?>
+        </p>
 
     </div>
 </body>

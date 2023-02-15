@@ -34,9 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $vars['_NEW'] = $_POST['members'];
             } else {
                 $members = explode(',' , $members);
+                $cres = count($res);
                 $c = count($members);
                 for ( $i=0; $i < $c; $i++) {
-                    $res[] = [ 'n'=>$i +1, 'name'=>$members[$i], 'rate'=>rand(0, 100) ];
+                    $res[] = [ 'n'=>($cres +$i +1), 'name'=>$members[$i], 'rate'=>rand(0, 100) ];
                 }
             }
 
@@ -48,7 +49,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     $vars['_METHOD'] = 'GET';
-    unset($_SESSION['old']);
+
+    if (!isset($_GET['sortby'])) {
+        unset($_SESSION['old']);
+    } else {
+        $vars['_SORTBY'] = $_GET['sortby'];
+
+        // достаём старую таблицу
+        if ( isset( $_SESSION['old'] )) {
+            $vars['_MEMBERS'] = json_decode($_SESSION['old'], true);
+            switch ($_GET['sortby']) {
+                case 0:
+                    if ( $_GET['desc0'] == 1) {
+                        function sorter(array $a, array $b) {
+                            return $b['n'] <=> $a['n'];
+                        }
+                    } else {
+                        function sorter(array $a, array $b) {
+                            return $a['n'] <=> $b['n'];
+                        }
+                    }
+                    $vars['_DESC0'] = $_GET['desc0'];
+                    break;
+                case 1:
+                    if ( $_GET['desc1'] == 1) {
+                        function sorter(array $a, array $b) {
+                            return $b['name'] <=> $a['name'];
+                        }
+                    } else {
+                        function sorter(array $a, array $b) {
+                            return $a['name'] <=> $b['name'];
+                        }
+                    }
+                    $vars['_DESC1'] = $_GET['desc1'];
+                    break;
+                case 2:
+                    if ( $_GET['desc2'] == 1) {
+                        function sorter(array $a, array $b) {
+                            return $b['rate'] <=> $a['rate'];
+                        }
+                    } else {
+                        function sorter(array $a, array $b) {
+                            return $a['rate'] <=> $b['rate'];
+                        }
+                    }
+                    $vars['_DESC2'] = $_GET['desc2'];
+                    break;
+            }
+            usort($vars['_MEMBERS'], 'sorter');
+        } else {
+            $vars['_MEMBERS'] = [];
+        }
+
+    }
+
 }
 
 echo renderTpl( ROOT_DIR . 'templates/main.php', $vars);
