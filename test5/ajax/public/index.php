@@ -10,5 +10,6 @@ session_start();
 if (!isset($_SESSION['count'])) {
     $_SESSION['count'] = 1;
 }
+unset($_SESSION['old']);
 
 echo renderTpl( ROOT_DIR . 'templates/main.php');

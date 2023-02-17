@@ -27,10 +27,17 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-sm-6 text-center">
-                        <input type="text" id="members" name="members" placeholder="Введите имена участников через запятую"
+                        <input type="text" id="members" name="members" placeholder="Введите имена участников через запятую">
                     </div>
                 </div>
-
+<!--
+                это если просто запретить ввод НЕ кирилицы
+                <script>
+                    document.querySelector('#members').addEventListener('input', function() {
+                        this.value = this.value.replace(/[^А-Яа-яЁё,]/g, '');
+                    })
+                </script>
+-->
                 <br>
                 <div class="row justify-content-center">
                     <div class="col text-center">
@@ -44,17 +51,32 @@
 
         <script>
             function gettable(){
-                const input = document.getElementById('members'); // Извлекаем элемент input
-                const members = input.value;
-                $.ajax({
-                    url: 'members.php',
-                    method: 'post',
-                    dataType: 'html',
-                    data: {members:members},
-                    success: function(result){
-                        $("#table").html( " Members: "+result );
-                    }
-                });
+                var input = document.getElementById('members');
+                var members = input.value;
+
+                var regexp = /[^А-Яа-яЁё,]/g;
+                var q = true;
+
+                if ( members === '' ) {
+                    alert('Введите имена участников через запятую!');
+                    q = false;
+                }
+                if ( regexp.test(members) ) {
+                    alert('Доступны только кириллические буквы и запятая!');
+                    q = false;
+                }
+                if (q) {
+                    input.value = '';
+                   $.ajax({
+                        url: 'ajax/members.php',
+                        method: 'post',
+                        dataType: 'html',
+                        data: {members: members},
+                        success: function (data) {
+                            $("#table").html(data);
+                        }
+                    });
+                }
             }
         </script>
     </div>
