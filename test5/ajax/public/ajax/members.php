@@ -10,23 +10,23 @@ session_start();
 
 // достаём старую таблицу
 if ( isset( $_SESSION['old'] )) {
-    $vars['_MEMBERS'] = json_decode($_SESSION['old'], true);
+    $vars['_MEMBERS_'] = json_decode($_SESSION['old'], true);
 } else {
-    $vars['_MEMBERS'] = [];
+    $vars['_MEMBERS_'] = [];
 }
 // обрабатывем ввод
 if ( isset($_POST['members'] )) {
-    $cres = count($vars['_MEMBERS']);
+    $cres = count($vars['_MEMBERS_']);
     $members = explode(',', $_POST['members']);
     $c = count($members);
     for ($i = 0; $i < $c; $i++) {
-        $vars['_MEMBERS'][] = ['n' => ($cres + $i + 1), 'name' => $members[$i], 'rate' => rand(0, 100)];
+        $vars['_MEMBERS_'][] = ['n' => ($cres + $i + 1), 'name' => $members[$i], 'rate' => rand(0, 100)];
     }
-    $_SESSION['old'] = json_encode($vars['_MEMBERS'], true);
+    $_SESSION['old'] = json_encode($vars['_MEMBERS_'], true);
 }
 
 // обрабатываем сортировку
-if ( isset($_POST['sortby']) && ( count($vars['_MEMBERS']) != 0) ) {
+if ( isset($_POST['sortby']) && ( count($vars['_MEMBERS_']) != 0) ) {
     switch ($_POST['sortby']) {
         case 0:
             if ( $_POST['desc'] == 1) {
@@ -38,7 +38,6 @@ if ( isset($_POST['sortby']) && ( count($vars['_MEMBERS']) != 0) ) {
                     return $a['n'] <=> $b['n'];
                 }
             }
-            $vars['_DESC0'] = $_POST['desc'];
             break;
         case 1:
             if ( $_POST['desc'] == 1) {
@@ -50,7 +49,6 @@ if ( isset($_POST['sortby']) && ( count($vars['_MEMBERS']) != 0) ) {
                     return $a['name'] <=> $b['name'];
                 }
             }
-            $vars['_DESC1'] = $_POST['desc'];
             break;
         case 2:
             if ( $_POST['desc'] == 1) {
@@ -62,10 +60,11 @@ if ( isset($_POST['sortby']) && ( count($vars['_MEMBERS']) != 0) ) {
                     return $a['rate'] <=> $b['rate'];
                 }
             }
-            $vars['_DESC2'] = $_POST['desc'];
-            break;
+             break;
     }
-    usort($vars['_MEMBERS'], 'sorter');
+    usort($vars['_MEMBERS_'], 'sorter');
+    $vars['_SORTBY_'] = $_POST['sortby'];
+    $vars['_DESC_'] = $_POST['desc'];
 }
 
 echo renderTpl( ROOT_DIR . 'templates/table.php', $vars);
